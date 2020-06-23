@@ -1,14 +1,14 @@
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 dotenv.config();
 
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import nodemailer from 'nodemailer';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(cors({ origin: 'https://nullchar.now.sh' }));
-app.use(bodyParser);
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
 const GMAIL_USER = process.env.GMAIL_USER;
