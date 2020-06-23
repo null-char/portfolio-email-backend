@@ -9,6 +9,7 @@ const nodemailer = require('nodemailer');
 const app = express();
 app.use(cors({ origin: 'https://nullchar.now.sh' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
 const GMAIL_USER = process.env.GMAIL_USER;
@@ -29,15 +30,17 @@ app.post('/api/contact', (req, res) => {
     from: req.body.email,
     to: GMAIL_USER,
     subject: 'New message from the contact form from https://nullchar.dev',
-    text: `${req.body.name} (${req.body.email}) says: \n ${req.body.message}`,
+    text: `${req.body.name} (${req.body.email}) says: \n${req.body.message}`,
   };
 
   // Attempt to send the email
   smtpTrans.sendMail(mailOpts, (error, response) => {
     if (error) {
-      res.status(500).json({ message: `error` });
+      res
+        .status(500)
+        .json({ message: 'Error sending message. Please try again later.' });
     } else {
-      res.status(200).json({ message: 'success' });
+      res.status(200).json({ message: 'Successfully sent message' });
     }
   });
 });
