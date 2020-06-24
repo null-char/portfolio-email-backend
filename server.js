@@ -7,7 +7,15 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 
 const app = express();
-app.use(cors({ origin: 'https://nullchar.now.sh' }));
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? 'https://nullchar.now.sh'
+        : // local gatsby server
+          'http://localhost:8000',
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
